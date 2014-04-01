@@ -23,14 +23,14 @@ public class MainActivity extends Activity {
 		try {
 			
 			// get file from asset folder
-			AssetFileDescriptor filedes = getAssets().openFd("song.aif");
+			AssetFileDescriptor filedes = getAssets().openFd("emma16.wav");
 			// instantiate player object
 			player = new Player(filedes);
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			Log.d("play", "file not found");
-		} catch (IOException e) {
+		} catch (IOException e) { 
 			Log.d("play",e.getMessage());
 		}
 	}
@@ -59,9 +59,9 @@ public class MainActivity extends Activity {
 			// playing song must be done in new thread, or app will hang until song is over
 			new Thread(new Runnable() {
 				public void run() {
-					player.play(); 
+					player.play();
 				}
-			}).start();		
+			}).start();
 		}
 	}
 }
