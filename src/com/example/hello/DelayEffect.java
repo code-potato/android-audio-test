@@ -63,14 +63,15 @@ public class DelayEffect {
         double output;
         double temp = feedbackGain * delayBuf.getCurrentOut();
         output = delayBuf.tick(input + temp);
-        Log.d("Delay", "output = " + output);
+        //Log.d("Delay", "output = " + output);
         output = (input * dryGain) + (output * wetGain);
-//        adjust for clipping
+        //adjust for clipping
         if (output > 1.0)
             output = 1.0;
         else if (output < -1.0)
             output = -1.0;
-//
+
         return output;
+//        return input * dryGain;
     }
 }

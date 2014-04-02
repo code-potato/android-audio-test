@@ -29,7 +29,6 @@ public class Player {
 	
 	private AudioTrack track;
 
-    DelayLine delayl;
     DelayEffect delay;
 
     public Player(AssetFileDescriptor descriptor) throws IOException {
@@ -39,6 +38,8 @@ public class Player {
 		is = new FileInputStream(descriptor.getFileDescriptor());
 		bis = new BufferedInputStream(is);
 		dis = new DataInputStream(bis); //has to do with endien stuff
+
+        dis.skipBytes(44);
 		
 		// crate byte buffer
 		byteBuff = new byte[BUFFSIZE];
@@ -49,11 +50,11 @@ public class Player {
 							AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT,
 							32000, AudioTrack.MODE_STREAM);
 
-        delayl = new DelayLine(88200);
-        delayl.setDelayLineDelay(44100);
-        delay = new DelayEffect(88200);
-        delay.setDelayTime(44100);
+        // set delay to 100ms
+        delay = new DelayEffect(8820);
+        delay.setDelayTime(4410);
 
+        // set delay parameters
         delay.setWetGain(1);
         delay.setDryGain(1);
         delay.setFeedbackGain(1);
@@ -77,16 +78,18 @@ public class Player {
 			try {
 				//fill buffer with bytes from file reader
 				for(int i=0; i < BUFFSIZE/8; i++){
-                    //read float from input and save to byte buffer
+
+                    /*
+                    Read double from input, tick() the effects,
+                    then save to bytebuffer.
+                     */
 					bb.putDouble(0, delay.tick(dis.readDouble()));
 					bb.rewind();
-                    // future effect chain goes here
 					bb.get(byteBuff,i*8,8);
 				}
 				
 				//write buffer to track to play
  				track.write(byteBuff, 0, BUFFSIZE);
-//				track.write(shortBuff, 0, BUFFSIZE);
 				
 			} catch (IOException e) {
 				break; //when eof is reached
@@ -98,5 +101,4 @@ public class Player {
 		Log.d("player", "pause");
 		isPlaying = false;
 	}
-	
 }
