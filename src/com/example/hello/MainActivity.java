@@ -1,8 +1,11 @@
 package com.example.hello;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.res.AssetFileDescriptor;
@@ -23,9 +26,9 @@ public class MainActivity extends Activity {
 		try {
 			
 			// get file from asset folder
-			AssetFileDescriptor filedes = getAssets().openFd("emma16.wav");
+			//AssetFileDescriptor filedes = getAssets().openFd("emma16.raw");
 			// instantiate player object
-			player = new Player(filedes);
+			player = new Player((getAssets().open("emma16.raw")));
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -62,6 +65,7 @@ public class MainActivity extends Activity {
 					player.play();
 				}
 			}).start();
+//            player.play();
 		}
 	}
 }

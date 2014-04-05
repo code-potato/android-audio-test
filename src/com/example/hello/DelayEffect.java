@@ -1,7 +1,5 @@
 package com.example.hello;
 
-import android.util.Log;
-
 /**
  * Created by michael on 4/1/14.
  */
@@ -58,12 +56,11 @@ public class DelayEffect {
     }
 
 
-    double tick(double input)
+    public double tick(double input)
     {
         double output;
         double temp = feedbackGain * delayBuf.getCurrentOut();
         output = delayBuf.tick(input + temp);
-        //Log.d("Delay", "output = " + output);
         output = (input * dryGain) + (output * wetGain);
         //adjust for clipping
         if (output > 1.0)
